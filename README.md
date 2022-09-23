@@ -16,10 +16,7 @@
 
 # Dependencies
 
-**TODO: adapt this section**
-
-- `bash`, `curl`, `tar`: generic POSIX utilities.
-- `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
+- `bash`, `curl`, `unzip`: generic POSIX utilities.
 
 # Install
 
@@ -43,8 +40,8 @@ asdf install gamercade-console latest
 # Set a version globally (on your ~/.tool-versions file)
 asdf global gamercade-console latest
 
-# Now gamercade-console commands are available
-gamercade-console --help
+# Now gamercade_console, gamercade_editor and gccl commands are available
+gccl --help
 ```
 
 Check [asdf](https://github.com/asdf-vm/asdf) readme for more instructions on how to
