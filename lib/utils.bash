@@ -5,7 +5,7 @@ set -euo pipefail
 GH_REPO="https://github.com/gamercade-io/gamercade_console"
 PACKAGE_NAME="Gamercade"
 TOOL_NAME="gamercade-console"
-TOOL_TEST="gamercade_console --help"
+TOOL_TEST="gccl --help"
 
 fail() {
   echo -e "asdf-$TOOL_NAME: $*"
