@@ -2,10 +2,10 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for gamercade-console.
 GH_REPO="https://github.com/gamercade-io/gamercade_console"
+PACKAGE_NAME="Gamercade"
 TOOL_NAME="gamercade-console"
-TOOL_TEST="gamercade-console --help"
+TOOL_TEST="gamercade_console --help"
 
 fail() {
   echo -e "asdf-$TOOL_NAME: $*"
@@ -31,20 +31,23 @@ list_github_tags() {
 }
 
 list_all_versions() {
-  # TODO: Adapt this. By default we simply list the tag names from GitHub releases.
-  # Change this function if gamercade-console has other means of determining installable versions.
   list_github_tags
 }
 
 download_release() {
-  local version filename url
+  local version filename platform url
   version="$1"
   filename="$2"
 
-  # TODO: Adapt the release URL convention for gamercade-console
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  case "$OSTYPE" in
+  darwin*) platform="Mac" ;;
+  linux*) platform="Ubuntu" ;;
+  *) fail "Unsupported platform" ;;
+  esac
 
-  echo "* Downloading $TOOL_NAME release $version..."
+  url="$GH_REPO/releases/download/${version}/${PACKAGE_NAME}-${platform}.zip"
+
+  echo "* Downloading $PACKAGE_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
 
@@ -60,15 +63,15 @@ install_version() {
   (
     mkdir -p "$install_path"
     cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
+    chmod +x "$install_path"/*
 
-    # TODO: Assert gamercade-console executable exists.
     local tool_cmd
     tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
     test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
 
-    echo "$TOOL_NAME $version installation was successful!"
+    echo "$PACKAGE_NAME $version installation was successful!"
   ) || (
     rm -rf "$install_path"
-    fail "An error occurred while installing $TOOL_NAME $version."
+    fail "An error occurred while installing $PACKAGE_NAME $version."
   )
 }
